@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Threading;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Data.Tables;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions;
+
 
 namespace StorageTools
 {
@@ -31,7 +28,6 @@ namespace StorageTools
                 Id = id,
                 PartitionKey = yearMonthDay,
                 RowKey = hourMinute,
-                Timestamp = time,
                 Status = status
             };
 
@@ -50,7 +46,11 @@ namespace StorageTools
                 {
                     foreach (ApiEntryEntity entry in page.Values)
                     {
-                        entityList.Add($"{entry.Id} - {entry.Status} - {entry.Timestamp}");
+                        DateTime? timestamp;
+                        timestamp = entry.Timestamp?.ToLocalTime().DateTime ?? DateTime.UnixEpoch;
+
+                        entityList.Add(
+                            $"{entry.Id} - {entry.Status} - {timestamp}");
                     }
                 }
             }

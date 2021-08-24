@@ -33,19 +33,18 @@ namespace AzureFunction.FunctionApp
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             id = id ?? data?.id;
 
-            if (id != null)
+            if (id == null)
+                return new BadRequestObjectResult(
+                    "Please pass a ID of the blob on the query string or in the request body");
+            try
             {
-                try
-                {
-                    var payload = await _blobService.GetBlobAsync(id, "api-payloads");
-                    return new OkObjectResult(payload);
-                }
-                catch
-                {
-                    return new BadRequestObjectResult("Payload with that ID was not found");
-                }
+                var payload = await _blobService.GetBlobAsync(id, "api-payloads");
+                return new OkObjectResult(payload);
             }
-            return new BadRequestObjectResult("Please pass a ID of the blob on the query string or in the request body");
+            catch
+            {
+                return new BadRequestObjectResult("Payload with that ID was not found");
+            }
         }
     }
 }

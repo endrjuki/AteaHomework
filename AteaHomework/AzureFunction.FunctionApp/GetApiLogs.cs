@@ -29,31 +29,29 @@ namespace AzureFunction.FunctionApp
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string fromDate = req.Query["fromDate"];
-            string toDate = req.Query["toDate"];
+            string fromDate = req.Query["startDate"];
+            string toDate = req.Query["endDate"];
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             fromDate = fromDate ?? data?.fromDate;
             toDate = toDate ?? data?.toDate;
 
-            if (fromDate != null && toDate != null)
+            if (fromDate == null || toDate == null)
+                return new BadRequestObjectResult(
+                    "Please pass a startDate/endDate on the query string or in the request body in dd-MM-yyyy format");
+            try
             {
-                try
-                {
-                    var startDate = DateTime.Parse(fromDate);
-                    var endDate = DateTime.Parse(toDate);
-                    var list = await _tableService.ListEntriesAsync("apiLog", startDate, endDate);
-                    return new OkObjectResult("API FETCH LOG [ID - STATUS - TIMESTAMP]:\n\n" + String.Join("\n", list));
-                }
-                catch (Exception e)
-                {
-                    log.LogInformation($"{e} occured, message: {e.Message}");
-                    return new BadRequestObjectResult("error has occured.");
-                }
+                var startDate = DateTime.Parse(fromDate);
+                var endDate = DateTime.Parse(toDate);
+                var list = await _tableService.ListEntriesAsync("apiLog", startDate, endDate);
+                return new OkObjectResult("API FETCH LOG [ID - STATUS - TIMESTAMP]:\n\n" + String.Join("\n", list));
             }
-            return new BadRequestObjectResult(
-                    "Please pass a fromDate/toDate on the query string or in the request body in dd-MM-yyyy format");
+            catch (Exception e)
+            {
+                log.LogInformation($"{e} occured, message: {e.Message}");
+                return new BadRequestObjectResult("error has occured.");
+            }
         }
     }
 }
