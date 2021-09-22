@@ -18,7 +18,7 @@ namespace AzureFunction
         }
 
         [FunctionName("FetchAPI")]
-        public async Task RunAsync([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer, ILogger log)
+        public async Task RunAsync([TimerTrigger("0 * * * * *")] TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"API fetch attempted at: {DateTime.Now}");
             _apiScraper.Scrape();
