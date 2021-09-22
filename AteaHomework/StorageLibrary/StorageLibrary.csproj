@@ -2,7 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
     </PropertyGroup>
+
 
     <ItemGroup>
       <PackageReference Include="Azure.Data.Tables" Version="12.2.0-beta.1" />

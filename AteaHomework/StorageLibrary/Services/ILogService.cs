@@ -12,6 +12,5 @@ namespace StorageLibrary.Services
         public Task AddLogEntryAsync(string id, string statusCode, DateTime time);
 
         public Task<IEnumerable<string>> ListEntriesByDateAsync(DateTime startDate, DateTime endDate);
-
     }
 }

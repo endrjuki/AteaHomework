@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunction", "AzureFunction\AzureFunction.csproj", "{55FE0F4B-ECC8-48AF-8DCD-2B94523DB4C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageLibrary", "StorageLibrary\StorageLibrary.csproj", "{8822C11D-0748-4582-BAA6-AB854C89114A}"
@@ -18,5 +21,11 @@ Global
 		{8822C11D-0748-4582-BAA6-AB854C89114A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8822C11D-0748-4582-BAA6-AB854C89114A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8822C11D-0748-4582-BAA6-AB854C89114A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA943B0A-6094-4854-B506-09E050B291EC}
 	EndGlobalSection
 EndGlobal
