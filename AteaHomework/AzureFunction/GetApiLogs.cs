@@ -9,26 +9,22 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.OData.Edm;
 using Newtonsoft.Json;
-using StorageTools;
+using StorageLibrary;
 
-namespace AzureFunction.FunctionApp
+namespace AzureFunction
 {
     public class GetApiLogs
     {
-        private readonly ITableService _tableService;
 
-        public GetApiLogs(ITableService tableService)
-        {
-            _tableService = tableService;
-        }
 
         [FunctionName("GetApiLogs")]
         public async Task<IActionResult> RunAsync(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
+            return new AcceptedResult();
             log.LogInformation("C# HTTP trigger function processed a request.");
-
+            /*
             string fromDate = req.Query["startDate"];
             string toDate = req.Query["endDate"];
 
@@ -52,6 +48,7 @@ namespace AzureFunction.FunctionApp
                 log.LogInformation($"{e} occured, message: {e.Message}");
                 return new BadRequestObjectResult("error has occured.");
             }
+            */
         }
     }
 }

@@ -7,26 +7,22 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using StorageTools;
+using StorageLibrary;
 
-namespace AzureFunction.FunctionApp
+namespace AzureFunction
 {
     public class GetApiPayload
     {
-        private readonly IBlobService _blobService;
 
-        public GetApiPayload(IBlobService blobService)
-        {
-            _blobService = blobService;
-        }
 
         [FunctionName("GetApiPayload")]
         public async Task<IActionResult> RunAsync(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
+            return new AcceptedResult();
             log.LogInformation("C# HTTP trigger function processed a request.");
-
+            /*
             string id = req.Query["id"];
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -45,6 +41,7 @@ namespace AzureFunction.FunctionApp
             {
                 return new BadRequestObjectResult("Payload with that ID was not found");
             }
+            */
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunction.FunctionApp", "AzureFunction.FunctionApp\AzureFunction.FunctionApp.csproj", "{55FE0F4B-ECC8-48AF-8DCD-2B94523DB4C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunction", "AzureFunction\AzureFunction.csproj", "{55FE0F4B-ECC8-48AF-8DCD-2B94523DB4C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageTools", "StorageTools\StorageTools.csproj", "{8822C11D-0748-4582-BAA6-AB854C89114A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageLibrary", "StorageLibrary\StorageLibrary.csproj", "{8822C11D-0748-4582-BAA6-AB854C89114A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

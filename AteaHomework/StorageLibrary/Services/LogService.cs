@@ -3,22 +3,26 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Data.Tables;
+using Refit;
+using StorageLibrary.Configuration;
+using StorageLibrary.Models;
 
 
-namespace StorageTools
+namespace StorageLibrary.Services
 {
-    public class TableService : ITableService
+    public class LogService : ILogService
     {
         private readonly TableServiceClient _tableServiceClient;
+        private readonly ICustomConfigurationProvider _configurationProvider;
 
-        public TableService(TableServiceClient tableServiceClient)
+        public LogService(TableServiceClient tableServiceClient, ICustomConfigurationProvider provider)
         {
             _tableServiceClient = tableServiceClient;
+            _configurationProvider = provider;
         }
-
-        public async Task AddTableEntry(string id, DateTime time, string tableName, string status = "success")
+        public async Task AddLogEntryAsync(string id, string statusCode, DateTime time)
         {
-            var tableClient = _tableServiceClient.GetTableClient(tableName);
+            var tableClient = _tableServiceClient.GetTableClient(_configurationProvider.AzureTableName);
             await tableClient.CreateIfNotExistsAsync();
 
             string yearMonthDay = time.ToString("yyyy-MM-dd");
@@ -28,19 +32,22 @@ namespace StorageTools
                 Id = id,
                 PartitionKey = yearMonthDay,
                 RowKey = hourMinute,
-                Status = status
+                Status = statusCode
             };
 
             await tableClient.AddEntityAsync(newEntity);
         }
-        public async Task<IEnumerable<string>> ListEntriesAsync(string tableName, DateTime startDate, DateTime endDate)
+
+        public async Task<IEnumerable<string>> ListEntriesByDateAsync(DateTime startDate, DateTime endDate)
         {
-            var tableClient = _tableServiceClient.GetTableClient(tableName);
+            var tableClient = _tableServiceClient.GetTableClient(_configurationProvider.AzureTableName);
 
             var entityList = new List<string>();
             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
-                var query = tableClient.QueryAsync<ApiEntryEntity>(e => e.PartitionKey == $"{date:yyyy-MM-dd}", null, new[] { "Id, Status, Timestamp" });
+                var query = tableClient
+                    .QueryAsync<ApiEntryEntity>(e =>
+                        e.PartitionKey == $"{date:yyyy-MM-dd}", null, new[] { "Id, Status, Timestamp" });
 
                 await foreach (Page<ApiEntryEntity> page in query.AsPages())
                 {

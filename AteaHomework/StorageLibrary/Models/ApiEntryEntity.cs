@@ -2,7 +2,7 @@
 using Azure;
 using Azure.Data.Tables;
 
-namespace StorageTools
+namespace StorageLibrary.Models
 {
     public class ApiEntryEntity : ITableEntity
     {

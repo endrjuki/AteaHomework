@@ -1,35 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Microsoft.Extensions.Azure;
+using StorageLibrary.Configuration;
 
-namespace StorageTools
+namespace StorageLibrary.Services
 {
-    public class BlobService : IBlobService
+    public class DataStorageService : IDataStorageService
     {
         private readonly BlobServiceClient _blobServiceClient;
+        private readonly ICustomConfigurationProvider _configurationProvider;
 
-        public BlobService(BlobServiceClient blobServiceClient)
+        public DataStorageService(BlobServiceClient blobServiceClient, ICustomConfigurationProvider configurationProvider)
         {
             _blobServiceClient = blobServiceClient;
+            _configurationProvider = configurationProvider;
         }
-        public async Task<string> GetBlobAsync(string name, string containerName)
-        {
 
-            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        public async Task<string> GetDataAsync(string name)
+        {
+            var containerClient = _blobServiceClient
+                .GetBlobContainerClient(_configurationProvider.AzureBlobContainerName);
             var blobClient = containerClient.GetBlobClient(name);
             var blobDownloadInfo = await blobClient.DownloadAsync();
             return await new StreamReader(blobDownloadInfo.Value.Content).ReadToEndAsync();
         }
 
-        public async Task<IEnumerable<string>> ListBlobsAsync(string containerName)
+        public async Task<IEnumerable<string>> ListAllDataAsync()
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            var containerClient = _blobServiceClient
+                .GetBlobContainerClient(_configurationProvider.AzureBlobContainerName);
             var items = new List<string>();
 
             await foreach (var blobItem in containerClient.GetBlobsAsync())
@@ -40,9 +42,10 @@ namespace StorageTools
             return items;
         }
 
-        public async Task UploadContentBlobAsync(string content, string fileName, string containerName)
+        public async Task UploadContentAsync(string content, string fileName)
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            var containerClient = _blobServiceClient
+                .GetBlobContainerClient(_configurationProvider.AzureBlobContainerName);
             await containerClient.CreateIfNotExistsAsync();
             var blobClient = containerClient.GetBlobClient(fileName);
 
