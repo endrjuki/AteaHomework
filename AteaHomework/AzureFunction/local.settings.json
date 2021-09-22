@@ -1,0 +1,11 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "connectionString": "UseDevelopmentStorage=true",
+        "apiEndpoint": "https://api.publicapis.org/random?auth=null",
+        "azureTableName": "apiLogs",
+        "azureBlobContainerName": "api-blob-storage",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    }
+}
